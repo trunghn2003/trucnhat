@@ -4,13 +4,21 @@
     <meta charset="UTF-8" />
     <title>Quản lý trực nhật (Roll) & Thống kê</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <style>
       /* General Body Styles */
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Segoe UI", Arial, sans-serif; /* Font mềm mại hơn */
         margin: 0;
         padding: 20px;
-        background-color: #f4f7f6;
+        background-color: #eef2f7; /* Nền sáng và dịu mắt */
         color: #333;
         line-height: 1.6;
       }
@@ -20,104 +28,118 @@
         color: #2c3e50;
         text-align: center;
         margin-bottom: 30px;
-        font-size: 2.5em;
-        font-weight: 600;
+        font-size: 2.8em; /* To hơn */
+        font-weight: 700; /* Đậm hơn */
+        letter-spacing: 0.5px; /* Tăng khoảng cách chữ */
       }
 
       h2 {
         color: #34495e;
-        border-bottom: 2px solid #aec6cf;
-        padding-bottom: 10px;
-        margin-top: 40px;
-        margin-bottom: 20px;
-        font-size: 1.8em;
+        border-bottom: 2px solid #aebac7; /* Màu border dịu hơn */
+        padding-bottom: 12px; /* Tăng padding */
+        margin-top: 0px;
+        margin-bottom: 25px; /* Tăng margin */
+        font-size: 2em; /* To hơn */
+        font-weight: 600;
       }
 
       /* Section Styling */
       .section {
         background-color: #ffffff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 30px; /* Tăng padding */
+        border-radius: 12px; /* Góc bo tròn nhiều hơn */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Bóng đổ rõ hơn */
         margin-bottom: 30px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #e0e6ed; /* Border nhẹ hơn */
       }
 
       /* Flex Container for User/Task Tables */
       .tables-container {
         display: flex;
-        gap: 20px; /* Space between tables */
-        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        gap: 25px; /* Tăng khoảng cách giữa các bảng */
+        flex-wrap: wrap;
         margin-bottom: 30px;
+        justify-content: center; /* Căn giữa các cột */
       }
 
       .tables-container .section {
-        flex: 1; /* Each section takes equal space */
-        min-width: 300px; /* Minimum width before wrapping */
-        margin-bottom: 0; /* Remove bottom margin for internal sections */
+        flex: 1;
+        min-width: 320px; /* Tăng min-width */
+        max-width: 48%; /* Đảm bảo 2 cột trên màn hình lớn */
+        margin-bottom: 0;
       }
 
       /* Forms and Inputs */
       form {
         display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
+        gap: 12px; /* Tăng khoảng cách giữa các phần tử form */
+        margin-bottom: 25px; /* Tăng margin */
         align-items: center;
-        flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+        flex-wrap: wrap;
       }
 
       input[type="text"],
+      input[type="date"],
       select {
         flex-grow: 1;
-        padding: 10px 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 1em;
-        max-width: 300px; /* Limit width for input/select */
+        padding: 12px 18px; /* Tăng padding */
+        border: 1px solid #cdd5df; /* Màu border dịu hơn */
+        border-radius: 8px; /* Góc bo tròn hơn */
+        font-size: 1.05em; /* Kích thước chữ lớn hơn */
+        max-width: 350px;
+        transition: all 0.3s ease; /* Thêm hiệu ứng chuyển động */
       }
 
       input[type="text"]:focus,
+      input[type="date"]:focus,
       select:focus {
         outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        border-color: #5d9cec; /* Màu border khi focus sáng hơn */
+        box-shadow: 0 0 0 3px rgba(93, 156, 236, 0.3); /* Bóng đổ khi focus */
+        background-color: #f8faff; /* Nền nhẹ khi focus */
       }
 
       /* Buttons */
       button {
-        background-color: #3498db;
+        background-color: #5d9cec; /* Màu xanh dương mới */
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
+        padding: 12px 25px; /* Tăng padding */
+        border-radius: 8px; /* Góc bo tròn hơn */
         cursor: pointer;
-        font-size: 1em;
-        transition: background-color 0.2s ease, transform 0.1s ease;
-        white-space: nowrap; /* Prevent button text from wrapping */
+        font-size: 1.05em; /* Kích thước chữ lớn hơn */
+        font-weight: 600; /* Đậm hơn */
+        transition: all 0.3s ease; /* Thêm hiệu ứng chuyển động */
+        white-space: nowrap;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Bóng đổ cho nút */
       }
 
       button:hover {
-        background-color: #2980b9;
-        transform: translateY(-1px);
+        background-color: #4a89dc; /* Màu đậm hơn khi hover */
+        transform: translateY(-2px); /* Nhấc nút lên một chút */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Bóng đổ lớn hơn khi hover */
       }
 
       button:active {
-        background-color: #21618c;
+        background-color: #3b74b6; /* Màu khi nhấn */
         transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
       .actions button {
-        background-color: #f39c12; /* Edit button */
-        margin-right: 8px;
+        background-color: #ff9800; /* Màu cam cho nút sửa */
+        margin-right: 10px; /* Tăng khoảng cách */
+        padding: 8px 15px; /* Padding nhỏ hơn cho nút trong bảng */
+        font-size: 0.9em;
       }
 
       .actions button.delete-btn {
-        background-color: #e74c3c; /* Delete button */
+        background-color: #e74c3c; /* Màu đỏ cho nút xóa */
         margin-right: 0;
       }
 
-      .actions button:first-child:hover {
-        background-color: #e67e22;
+      .actions button:hover {
+        background-color: #fb8c00; /* Màu đậm hơn khi hover */
       }
 
       .actions button.delete-btn:hover {
@@ -125,53 +147,67 @@
       }
 
       #rollAssignButton {
-        background-color: #27ae60; /* Green for roll button */
+        background-color: #4caf50; /* Xanh lá cây */
       }
       #rollAssignButton:hover {
-        background-color: #229954;
+        background-color: #43a047;
       }
       #clearAssignmentsButton,
       #clearAllStatsButton {
-        background-color: #e74c3c; /* Red for clear button */
+        background-color: #f44336; /* Đỏ */
       }
       #clearAssignmentsButton:hover,
       #clearAllStatsButton:hover {
-        background-color: #c0392b;
+        background-color: #d32f2f;
+      }
+      #applyUserTaskSummaryFilter {
+        background-color: #28a745;
+      }
+      #applyUserTaskSummaryFilter:hover {
+        background-color: #218838;
       }
 
       /* Table Styling */
       table {
         width: 100%;
-        border-collapse: separate; /* Use separate to allow border-radius on cells */
+        border-collapse: separate;
         border-spacing: 0;
-        margin-top: 20px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border-radius: 8px; /* Apply border-radius to the table */
-        overflow: hidden; /* Hide overflow for rounded corners */
+        margin-top: 25px; /* Tăng margin */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Bóng đổ rõ hơn */
+        border-radius: 10px; /* Góc bo tròn hơn cho bảng */
+        overflow: hidden;
       }
 
       th,
       td {
-        border: 1px solid #e0e0e0;
-        padding: 12px 15px;
+        border: 1px solid #e6e9ee; /* Border nhẹ hơn */
+        padding: 15px 18px; /* Tăng padding */
         text-align: left;
-        font-size: 0.95em;
+        font-size: 0.98em; /* Kích thước chữ lớn hơn một chút */
       }
 
       th {
-        background-color: #ecf0f1;
-        color: #2c3e50;
-        font-weight: 600;
+        background-color: #f0f4f8; /* Nền header nhẹ nhàng */
+        color: #495e74; /* Màu chữ đậm hơn */
+        font-weight: 700; /* Đậm hơn */
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.7px; /* Tăng khoảng cách chữ */
       }
 
       tr:nth-child(even) {
-        background-color: #f9f9f9;
+        background-color: #fcfdfe; /* Nền hàng chẵn siêu nhẹ */
       }
 
       tr:hover {
-        background-color: #eef7fc;
+        background-color: #eaf3f9; /* Nền khi hover nổi bật hơn */
+        cursor: pointer; /* Hiển thị con trỏ tay khi hover */
+      }
+
+      /* Checkbox Styling */
+      input[type="checkbox"] {
+        transform: scale(1.3); /* Phóng to checkbox */
+        margin-right: 8px; /* Khoảng cách với chữ */
+        accent-color: #5d9cec; /* Màu checkbox khi checked */
       }
 
       /* Report Section */
@@ -181,42 +217,70 @@
       }
 
       #report li {
-        background-color: #ecf0f1;
-        margin-bottom: 8px;
-        padding: 10px 15px;
-        border-radius: 5px;
-        border: 1px solid #dcdfe4;
+        background-color: #e8f0f7; /* Nền báo cáo nhẹ nhàng */
+        margin-bottom: 10px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: 1px solid #d2e3f0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-size: 1.1em; /* To hơn */
+      }
+
+      #report li strong {
+        color: #34495e; /* Màu đậm cho tên người */
       }
 
       #report li i {
         color: #95a5a6;
-        font-style: normal;
+        font-style: italic; /* Chữ nghiêng cho "Chưa phân công" */
       }
 
       /* Chart containers - now flex for horizontal layout */
       .charts-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center; /* Center charts if they don't fill the row */
+        gap: 25px; /* Tăng khoảng cách */
+        justify-content: center;
       }
 
       .chart-container {
-        flex: 1; /* Allow charts to grow and shrink */
-        min-width: 300px; /* Minimum width before wrapping */
-        max-width: 45%; /* Max width to allow two per row */
-        margin: 0; /* Remove auto margin from previous */
+        flex: 1;
+        min-width: 300px;
+        max-width: 35%; /* Đảm bảo 2 biểu đồ/hàng */
+        margin: 0;
+        background-color: #ffffff; /* Nền trắng cho container biểu đồ */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e0e6ed;
+        display: flex; /* Dùng flex để căn giữa canvas nếu cần */
+        justify-content: center;
+        align-items: center;
+      }
+      /* Đảm bảo canvas không bị tràn */
+      canvas {
+        max-width: 100%;
+        height: auto; /* Giữ tỷ lệ khung hình */
       }
 
-      #detailedAssignmentHistory {
-        margin-top: 20px;
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
+      #detailedAssignmentHistory,
+      #userTaskSummaryReport {
+        margin-top: 0px;
+        background-color: #f8fbfd; /* Nền nhẹ hơn */
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e0e6ed;
+      }
+
+      #detailedAssignmentHistory h3,
+      #userTaskSummaryReport h3 {
+        font-size: 1.6em;
+        color: #34495e;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #dbe3eb;
+        padding-bottom: 10px;
       }
 
       #detailedAssignmentHistory ul {
@@ -225,9 +289,10 @@
       }
 
       #detailedAssignmentHistory li {
-        margin-bottom: 10px;
-        padding-bottom: 5px;
-        border-bottom: 1px dashed #ddd;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed #e0e6ed;
+        font-size: 1.05em;
       }
 
       #detailedAssignmentHistory li:last-child {
@@ -236,23 +301,210 @@
         padding-bottom: 0;
       }
 
+      .filter-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+        align-items: center;
+        padding: 15px;
+        background-color: #f0f4f8;
+        border-radius: 8px;
+        border: 1px solid #e6e9ee;
+      }
+
+      .filter-controls label {
+        font-weight: 600;
+        color: #495e74;
+        white-space: nowrap;
+      }
+
+      .filter-controls input[type="date"],
+      .filter-controls select {
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid #cdd5df;
+        font-size: 1em;
+        flex-grow: 1;
+        min-width: 150px;
+      }
+
+      .filter-controls button {
+        padding: 10px 20px;
+        font-size: 1em;
+      }
+
+      /* Pagination styles */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 8px;
+      }
+
+      .pagination button {
+        background-color: #f0f4f8;
+        color: #34495e;
+        border: 1px solid #cdd5df;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: all 0.2s ease;
+      }
+
+      .pagination button:hover:not(:disabled) {
+        background-color: #e0e6ed;
+        color: #2c3e50;
+      }
+
+      .pagination button:disabled {
+        background-color: #e6e9ee;
+        color: #99aab5;
+        cursor: not-allowed;
+      }
+
+      .pagination button.active {
+        background-color: #5d9cec;
+        color: white;
+        border-color: #5d9cec;
+        font-weight: bold;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1000; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #888;
+        border-radius: 15px;
+        width: 80%; /* Could be responsive */
+        max-width: 700px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        animation: animatezoom 0.6s; /* Add animation */
+      }
+
+      /* Zoom Animation */
+      @keyframes animatezoom {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 38px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .modal-body .chart-container-modal {
+        min-height: 250px; /* Ensure chart has space */
+      }
+
+      .modal-body h4 {
+        color: #34495e;
+        font-size: 1.3em;
+        margin-bottom: 10px;
+        border-bottom: 1px dotted #ccc;
+        padding-bottom: 5px;
+      }
+
+      .modal-body ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      /* New style for inline tasks list */
+      .modal-body .task-list-inline {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap to next line */
+        gap: 5px 15px; /* Adjust gap between items */
+      }
+
+      .modal-body .task-list-inline li {
+        margin-bottom: 0; /* Remove bottom margin for list items */
+        font-size: 1em;
+        color: #555;
+        white-space: nowrap; 
+        text-wrap: wrap;
+      }
+
       /* Responsive Adjustments */
+      @media (max-width: 992px) {
+        .tables-container .section,
+        .chart-container {
+          max-width: 100%; /* Full width on medium screens */
+        }
+      }
+
       @media (max-width: 768px) {
         .tables-container,
         .charts-row {
           flex-direction: column;
+          gap: 20px; /* Giảm gap trên màn hình nhỏ */
         }
-        .chart-container {
-          max-width: 100%; /* Full width on small screens */
+        .section {
+          padding: 20px; /* Giảm padding trên mobile */
+        }
+        h1 {
+          font-size: 2em; /* Giảm cỡ chữ tiêu đề */
+        }
+        h2 {
+          font-size: 1.6em;
         }
         form {
           flex-direction: column;
           align-items: stretch;
+          gap: 10px;
         }
 
         input[type="text"],
-        select {
+        input[type="date"],
+        select,
+        button {
           max-width: 100%;
+          font-size: 0.95em;
+          padding: 10px 15px;
         }
 
         .actions {
@@ -263,6 +515,22 @@
 
         .actions button {
           flex-grow: 1;
+          margin-right: 0 !important; /* Đảm bảo không có margin thừa */
+        }
+
+        th,
+        td {
+          padding: 10px 12px;
+          font-size: 0.9em;
+        }
+
+        .filter-controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .modal-content {
+          width: 95%; /* Wider on small screens */
+          padding: 20px;
         }
       }
     </style>
@@ -281,7 +549,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Chọn</th>
+              <th><input type="checkbox" id="selectAllUsers" /></th>
               <th>Tên</th>
               <th>Hành động</th>
             </tr>
@@ -300,7 +568,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Chọn</th>
+              <th><input type="checkbox" id="selectAllTasks" /></th>
               <th>Công việc</th>
               <th>Hành động</th>
             </tr>
@@ -310,27 +578,29 @@
       </div>
     </div>
 
-    <div class="section">
-      <h2>Phân công trực nhật</h2>
-      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap">
-        <button id="rollAssignButton">Phân công ngẫu nhiên cho mục đã chọn</button>
-        <button id="clearAssignmentsButton">Xóa tất cả phân công hiện tại</button>
+    <div class="tables-container">
+      <div class="section">
+        <h2>Phân công trực nhật</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap">
+          <button id="rollAssignButton">Phân công ngẫu nhiên mục đã chọn</button>
+          <button id="clearAssignmentsButton">Xóa tất cả phân công hiện tại</button>
+        </div>
+        <table id="assignmentsTable">
+          <thead>
+            <tr>
+              <th>Người</th>
+              <th>Công việc</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
-      <table id="assignmentsTable">
-        <thead>
-          <tr>
-            <th>Người</th>
-            <th>Công việc</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
 
-    <div class="section">
-      <h2>Thống kê báo cáo hiện tại</h2>
-      <div id="report"></div>
+      <div class="section">
+        <h2>Lịch sử phân công chi tiết (3 ngày gần nhất)</h2>
+        <div id="detailedAssignmentHistory"></div>
+        <div id="detailedHistoryPagination" class="pagination"></div>
+      </div>
     </div>
 
     <div class="section">
@@ -340,46 +610,75 @@
       </div>
       <div class="charts-row">
         <div class="chart-container">
-          <canvas id="userAssignmentsChart" style="width: 500px; max-width: 500px; height: 500px; max-height: 500px"></canvas>
+          <canvas id="userAssignmentsChart"></canvas>
         </div>
         <div class="chart-container">
-          <canvas id="taskDistributionChart" style="width: 500px; max-width: 500px; height: 500px; max-height: 500px"></canvas>
+          <canvas id="taskDistributionChart" style="height: 320px"></canvas>
         </div>
       </div>
-      <div class="chart-container" style="max-width: 700px">
-        <h3>Biểu đồ số lượng phân công theo ngày</h3>
-        <canvas id="assignmentHistoryLineChart"></canvas>
-      </div>
 
-      <h3>Lịch sử phân công chi tiết</h3>
-      <div id="detailedAssignmentHistory"></div>
+      <h3>Thống kê công việc từng người</h3>
+      <div class="filter-controls">
+        <label for="filterStartDate">Từ ngày:</label>
+        <input type="date" id="filterStartDate" />
+        <label for="filterEndDate">Đến ngày:</label>
+        <input type="date" id="filterEndDate" />
+        <label for="filterUser">Người:</label>
+        <select id="filterUser"></select>
+        <label for="filterTask">Công việc:</label>
+        <select id="filterTask"></select>
+        <button id="applyUserTaskSummaryFilter">Áp dụng bộ lọc</button>
+      </div>
+      <div id="userTaskSummaryReport"></div>
+    </div>
+
+    <div id="userModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="document.getElementById('userModal').style.display='none'">&times;</span>
+        <h2 id="modalUserName"></h2>
+        <div class="modal-body">
+          <div class="chart-container-modal" style="height: 300px">
+            <canvas id="userTaskDetailChart"></canvas>
+          </div>
+          <h4>Thống kê chi tiết</h4>
+          <div id="userStatsDetail"></div>
+        </div>
+      </div>
     </div>
 
     <script>
+      // Đăng ký plugin Data Labels ngay sau khi các thư viện Chart.js được tải
+      Chart.register(ChartDataLabels);
+
       // Dữ liệu tạm thời
       let users = []; // Stores objects like { name: 'An', selected: true }
       let tasks = []; // Stores objects like { name: 'Lau nhà', selected: true }
       let assignments = []; // current assignments for this "roll"
       let assignmentHistory = []; // Stores objects like { date: 'YYYY-MM-DD', user: 'name', task: 'taskName' }
+      let lastAssignedDate = null; // New variable to track the last assignment date
 
       let userChartInstance;
       let taskChartInstance;
-      let historyLineChartInstance;
+      let userDetailChartInstance; // New: For the modal chart
+
+      // Pagination for detailed history
+      let detailedHistoryPageSize = 5; // Số ngày hiển thị trên mỗi trang
+      let currentDetailedHistoryPage = 1;
+      let filteredAssignmentDates = []; // Mảng chứa các ngày duy nhất đã được lọc (ví dụ: 3 ngày gần nhất)
 
       // Load data from localStorage (if available)
       function loadData() {
         const storedUsers = localStorage.getItem("users");
         const storedTasks = localStorage.getItem("tasks");
         const storedHistory = localStorage.getItem("assignmentHistory");
+        const storedLastAssignedDate = localStorage.getItem("lastAssignedDate"); // Load new variable
 
         if (storedUsers) {
           const parsedUsers = JSON.parse(storedUsers);
-          users = parsedUsers.map(u => {
-            // Convert old string format to object format {name, selected}
-            if (typeof u === 'string') {
+          users = parsedUsers.map((u) => {
+            if (typeof u === "string") {
               return { name: u, selected: true };
             }
-            // Ensure 'selected' property exists for existing objects
             if (u.selected === undefined) {
               return { name: u.name, selected: true };
             }
@@ -389,12 +688,10 @@
 
         if (storedTasks) {
           const parsedTasks = JSON.parse(storedTasks);
-          tasks = parsedTasks.map(t => {
-            // Convert old string format to object format {name, selected}
-            if (typeof t === 'string') {
+          tasks = parsedTasks.map((t) => {
+            if (typeof t === "string") {
               return { name: t, selected: true };
             }
-            // Ensure 'selected' property exists for existing objects
             if (t.selected === undefined) {
               return { name: t.name, selected: true };
             }
@@ -403,6 +700,15 @@
         }
 
         if (storedHistory) assignmentHistory = JSON.parse(storedHistory);
+
+        // CRITICAL FIX: Derive lastAssignedDate from assignmentHistory
+        if (assignmentHistory.length > 0) {
+          const sortedHistory = [...assignmentHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+          lastAssignedDate = new Date(sortedHistory[0].date);
+          lastAssignedDate.setHours(0, 0, 0, 0); // Normalize to start of day
+        } else {
+          lastAssignedDate = null; // Ensure it's null if no history
+        }
       }
 
       // Save data to localStorage
@@ -410,6 +716,11 @@
         localStorage.setItem("users", JSON.stringify(users));
         localStorage.setItem("tasks", JSON.stringify(tasks));
         localStorage.setItem("assignmentHistory", JSON.stringify(assignmentHistory));
+        if (lastAssignedDate) {
+          localStorage.setItem("lastAssignedDate", lastAssignedDate.toISOString().slice(0, 10)); // Save as YYYY-MM-DD string
+        } else {
+          localStorage.removeItem("lastAssignedDate");
+        }
       }
 
       // Helper to generate random colors for charts
@@ -428,6 +739,36 @@
         return colors;
       }
 
+      // Select All / Deselect All functionality for Users
+      function toggleAllUsers(checked) {
+        users.forEach((u) => (u.selected = checked));
+        renderUsers(); // Re-render to update checkboxes
+      }
+
+      function updateSelectAllUsersCheckbox() {
+        const selectAllCheckbox = document.getElementById("selectAllUsers");
+        if (selectAllCheckbox) {
+          const allSelected = users.length > 0 && users.every((u) => u.selected);
+          selectAllCheckbox.checked = allSelected;
+          selectAllCheckbox.indeterminate = !allSelected && users.some((u) => u.selected);
+        }
+      }
+
+      // Select All / Deselect All functionality for Tasks
+      function toggleAllTasks(checked) {
+        tasks.forEach((t) => (t.selected = checked));
+        renderTasks(); // Re-render to update checkboxes
+      }
+
+      function updateSelectAllTasksCheckbox() {
+        const selectAllCheckbox = document.getElementById("selectAllTasks");
+        if (selectAllCheckbox) {
+          const allSelected = tasks.length > 0 && tasks.every((t) => t.selected);
+          selectAllCheckbox.checked = allSelected;
+          selectAllCheckbox.indeterminate = !allSelected && tasks.some((u) => u.selected);
+        }
+      }
+
       // CRUD Người
       function renderUsers() {
         const tbody = document.querySelector("#usersTable tbody");
@@ -435,50 +776,51 @@
         users.forEach((u, i) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `<td>${i + 1}</td>
-                            <td><input type="checkbox" data-index="${i}" onchange="toggleUserSelection(${i})" ${u.selected ? 'checked' : ''}></td>
+                            <td><input type="checkbox" data-index="${i}" onchange="toggleUserSelection(${i})" ${
+            u.selected ? "checked" : ""
+          }></td>
                             <td>${u.name}</td>
                             <td class="actions">
+                              <button onclick="editUser(${i})">Sửa</button>
                                 <button class="delete-btn" onclick="deleteUser(${i})">Xóa</button>
                             </td>`;
           tbody.appendChild(tr);
-                                // <button onclick="editUser(${i})">Sửa</button>
         });
         saveData();
+        updateSelectAllUsersCheckbox(); // Update select all checkbox state
+        populateFilterDropdowns(); // Update filters when users change
       }
 
       document.getElementById("userForm").onsubmit = function (e) {
         e.preventDefault();
         const name = document.getElementById("userName").value.trim();
-        if (name && !users.some(u => u.name === name)) {
-            users.push({ name: name, selected: true }); // Store as object, default selected
+        if (name && !users.some((u) => u.name === name)) {
+          users.push({ name: name, selected: true });
         }
         document.getElementById("userName").value = "";
         renderUsers();
-        renderReport();
-        renderStatsReport(); // Cập nhật thống kê khi thêm người
+        renderStatsReport();
       };
 
       function toggleUserSelection(index) {
-          users[index].selected = !users[index].selected;
-          saveData();
+        users[index].selected = !users[index].selected;
+        saveData();
+        updateSelectAllUsersCheckbox(); // Update select all checkbox state
       }
 
       function editUser(i) {
         const oldName = users[i].name;
         const newName = prompt("Sửa tên người:", oldName);
-        if (newName && newName.trim() !== "" && !users.some(u => u.name === newName.trim() && u.name !== oldName)) {
+        if (newName && newName.trim() !== "" && !users.some((u) => u.name === newName.trim() && u.name !== oldName)) {
           users[i].name = newName.trim();
-          // Update name in current assignments
           assignments.forEach((a) => {
             if (a.user === oldName) a.user = newName.trim();
           });
-          // Update name in history
           assignmentHistory.forEach((h) => {
             if (h.user === oldName) h.user = newName.trim();
           });
           renderUsers();
           renderAssignments();
-          renderReport();
           renderStatsReport();
         } else if (newName && newName.trim() === oldName) {
           return;
@@ -490,14 +832,11 @@
       function deleteUser(i) {
         if (confirm(`Bạn có chắc chắn muốn xóa người này (${users[i].name})?`)) {
           const nameToDelete = users[i].name;
-          // Remove any current assignment involving this user
           assignments = assignments.filter((a) => a.user !== nameToDelete);
-          // Remove any history assignment involving this user
           assignmentHistory = assignmentHistory.filter((h) => h.user !== nameToDelete);
           users.splice(i, 1);
           renderUsers();
           renderAssignments();
-          renderReport();
           renderStatsReport();
         }
       }
@@ -509,38 +848,42 @@
         tasks.forEach((t, i) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `<td>${i + 1}</td>
-                            <td><input type="checkbox" data-index="${i}" onchange="toggleTaskSelection(${i})" ${t.selected ? 'checked' : ''}></td>
+                            <td><input type="checkbox" data-index="${i}" onchange="toggleTaskSelection(${i})" ${
+            t.selected ? "checked" : ""
+          }></td>
                             <td>${t.name}</td>
                             <td class="actions">
+                              <button onclick="editTask(${i})">Sửa</button>
                                 <button class="delete-btn" onclick="deleteTask(${i})">Xóa</button>
                             </td>`;
-          tbody.appendChild(tr);          
-                                // <button onclick="editTask(${i})">Sửa</button>
+          tbody.appendChild(tr);
         });
         saveData();
+        updateSelectAllTasksCheckbox(); // Update select all checkbox state
+        populateFilterDropdowns(); // Update filters when tasks change
       }
 
       document.getElementById("taskForm").onsubmit = function (e) {
         e.preventDefault();
         const name = document.getElementById("taskName").value.trim();
-        if (name && !tasks.some(t => t.name === name)) {
-            tasks.push({ name: name, selected: true }); // Store as object, default selected
+        if (name && !tasks.some((t) => t.name === name)) {
+          tasks.push({ name: name, selected: true });
         }
         document.getElementById("taskName").value = "";
         renderTasks();
-        renderReport();
-        renderStatsReport(); // Cập nhật thống kê khi thêm công việc
+        renderStatsReport();
       };
 
       function toggleTaskSelection(index) {
-          tasks[index].selected = !tasks[index].selected;
-          saveData();
+        tasks[index].selected = !tasks[index].selected;
+        saveData();
+        updateSelectAllTasksCheckbox(); // Update select all checkbox state
       }
 
       function editTask(i) {
         const oldName = tasks[i].name;
         const newName = prompt("Sửa tên công việc:", oldName);
-        if (newName && newName.trim() !== "" && !tasks.some(t => t.name === newName.trim() && t.name !== oldName)) {
+        if (newName && newName.trim() !== "" && !tasks.some((t) => t.name === newName.trim() && t.name !== oldName)) {
           tasks[i].name = newName.trim();
           assignments.forEach((a) => {
             if (a.task === oldName) a.task = newName.trim();
@@ -550,7 +893,6 @@
           });
           renderTasks();
           renderAssignments();
-          renderReport();
           renderStatsReport();
         } else if (newName && newName.trim() === oldName) {
           return;
@@ -567,7 +909,6 @@
           tasks.splice(i, 1);
           renderTasks();
           renderAssignments();
-          renderReport();
           renderStatsReport();
         }
       }
@@ -576,46 +917,123 @@
       function renderAssignments() {
         const tbody = document.querySelector("#assignmentsTable tbody");
         tbody.innerHTML = "";
+        if (assignments.length === 0) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="3" style="text-align: center;">Chưa có phân công nào được tạo.</td>`;
+          tbody.appendChild(tr);
+          return;
+        }
         assignments.forEach((a, i) => {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${a.user}</td><td>${a.task}</td>
-                            <td class="actions"><button class="delete-btn" onclick="deleteAssignment(${i})">Xóa</button></td>`;
+          tr.innerHTML = `<td>${a.user}</td>
+                            <td>${a.task}</td>
+                            `;
           tbody.appendChild(tr);
+          // <td class="actions">
+          //   <button class="delete-btn" onclick="deleteAssignment(${i})">
+          //     Xóa
+          //   </button>
+          // </td>;
         });
         saveData();
       }
 
       function rollAssignments() {
-        // Lấy danh sách người và công việc đã được chọn
-        const selectedUsers = users.filter(u => u.selected).map(u => u.name);
-        const selectedTasks = tasks.filter(t => t.selected).map(t => t.name);
+        const selectedUsers = users.filter((u) => u.selected).map((u) => u.name);
+        const selectedTasks = tasks.filter((t) => t.selected).map((t) => t.name);
 
         if (selectedUsers.length === 0 || selectedTasks.length === 0) {
           alert("Vui lòng chọn ít nhất một người và một công việc để phân công ngẫu nhiên.");
           return;
         }
 
-        // Clear previous assignments for a new roll
+        // Always use the actual current date for the assignment
+        const currentAssignDate = new Date();
+        currentAssignDate.setHours(0, 0, 0, 0); // Normalize to start of day
+        const assignDateString = currentAssignDate.toLocaleDateString("sv-SE"); // "YYYY-MM-DD"
+
+        // Update lastAssignedDate to the current actual date of the roll
+        lastAssignedDate = currentAssignDate;
+
+        // 1. Tính toán tần suất trực nhật gần đây (trong 3 ngày qua) cho những người dùng được chọn
+        const threeDaysAgo = new Date(currentAssignDate); // Dựa vào ngày phân công hiện tại
+        threeDaysAgo.setDate(currentAssignDate.getDate() - 2); // -2 to include today and the past two days = 3 days
+        threeDaysAgo.setHours(0, 0, 0, 0); // Chuẩn hóa về đầu ngày để so sánh
+
+        const userRecentAssignmentCounts = new Map();
+        selectedUsers.forEach((uName) => userRecentAssignmentCounts.set(uName, 0)); // Khởi tạo số lượt bằng 0
+
+        assignmentHistory.forEach((h) => {
+          const historyDate = new Date(h.date); // h.date có định dạng 'YYYY-MM-DD'
+          historyDate.setHours(0, 0, 0, 0); // Chuẩn hóa về đầu ngày để so sánh
+          if (historyDate >= threeDaysAgo && historyDate <= currentAssignDate && selectedUsers.includes(h.user)) {
+            // Thêm điều kiện <= currentAssignDate
+            userRecentAssignmentCounts.set(h.user, (userRecentAssignmentCounts.get(h.user) || 0) + 1);
+          }
+        });
+
+        // 2. Xác định điểm ưu tiên cho mỗi người dùng đã chọn
+        let maxActivityCount = 0;
+        userRecentAssignmentCounts.forEach((count) => {
+          if (count > maxActivityCount) {
+            maxActivityCount = count;
+          }
+        });
+
+        // Tạo danh sách người dùng kèm theo điểm ưu tiên của họ
+        const usersWithPriority = selectedUsers.map((uName) => {
+          const currentActivity = userRecentAssignmentCounts.get(uName) || 0;
+          // Điểm ưu tiên cao hơn cho hoạt động thấp hơn. Cộng 1 để đảm bảo điểm không bao giờ là 0.
+          const priorityScore = maxActivityCount - currentActivity + 1;
+          return { name: uName, score: priorityScore };
+        });
+
+        // Xóa các phân công trước đó cho lượt mới
         assignments = [];
+        const currentRollAssignments = []; // Tạo bản sao làm việc cho quá trình phân công
 
-        let availableUsersForRoll = [...selectedUsers];
         let availableTasksForRoll = [...selectedTasks];
+        shuffleArray(availableTasksForRoll); // Luôn xáo trộn công việc
 
-        // Shuffle both arrays
-        shuffleArray(availableUsersForRoll);
-        shuffleArray(availableTasksForRoll);
+        let availableUsersToAssign = [...usersWithPriority]; // Những người dùng có thể chọn trong lượt này
 
-        const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        // Thực hiện phân công dựa trên số lượng nhỏ nhất giữa người dùng đã chọn và công việc
+        const numberOfAssignmentsToMake = Math.min(selectedUsers.length, availableTasksForRoll.length);
 
-        const currentRollAssignments = [];
+        for (let i = 0; i < numberOfAssignmentsToMake; i++) {
+          if (availableUsersToAssign.length === 0) {
+            console.warn("Đã hết người dùng duy nhất để phân công nhiệm vụ.");
+            break;
+          }
 
-        // Assign tasks based on the minimum count of available users or tasks
-        for (let i = 0; i < Math.min(availableUsersForRoll.length, availableTasksForRoll.length); i++) {
-          const user = availableUsersForRoll[i];
-          const task = availableTasksForRoll[i];
+          // Select a user based on weighted random selection
+          let totalWeight = availableUsersToAssign.reduce((sum, user) => sum + user.score, 0);
+          let randomNum = Math.random() * totalWeight;
+          let chosenUser = null;
+          let chosenUserIndex = -1;
+          for (let j = 0; j < availableUsersToAssign.length; j++) {
+            randomNum -= availableUsersToAssign[j].score;
+            if (randomNum < 0) {
+              chosenUser = availableUsersToAssign[j];
+              chosenUserIndex = j;
+              break;
+            }
+          }
 
-          assignments.push({ user: user, task: task });
-          currentRollAssignments.push({ date: today, user: user, task: task });
+          // Fallback if somehow no user was chosen (e.g., totalWeight was 0 or floating point issue)
+          if (!chosenUser && availableUsersToAssign.length > 0) {
+            chosenUser = availableUsersToAssign[0]; // Pick first available as fallback
+            chosenUserIndex = 0;
+          }
+
+          const task = availableTasksForRoll[i]; // Pick task sequentially from shuffled tasks
+
+          if (chosenUser) {
+            assignments.push({ user: chosenUser.name, task: task });
+            currentRollAssignments.push({ date: assignDateString, user: chosenUser.name, task: task }); // Sử dụng assignDateString
+            // Remove the chosen user from the available pool for this round
+            availableUsersToAssign.splice(chosenUserIndex, 1);
+          }
         }
 
         // Thêm các phân công mới vào lịch sử
@@ -624,332 +1042,566 @@
         }
 
         renderAssignments();
-        renderReport();
-        renderStatsReport(); // Cập nhật thống kê sau khi phân công
-
-        if (availableUsersForRoll.length > availableTasksForRoll.length && availableTasksForRoll.length > 0) {
-          alert(
-            `Đã phân công trực nhật ngẫu nhiên cho ${availableTasksForRoll.length} người. ${
-              availableUsersForRoll.length - availableTasksForRoll.length
-            } người chưa được phân công do không đủ công việc đã chọn.`
-          );
-        } else if (availableTasksForRoll.length > availableUsersForRoll.length && availableUsersForRoll.length > 0) {
-          alert(
-            `Đã phân công trực nhật ngẫu nhiên cho ${availableUsersForRoll.length} người. ${
-              availableTasksForRoll.length - availableUsersForRoll.length
-            } công việc chưa được phân công.`
-          );
-        } else if (availableUsersForRoll.length > 0 && availableTasksForRoll.length > 0) {
-          alert("Đã phân công trực nhật ngẫu nhiên!");
-        } else {
-            // Trường hợp không có người hoặc công việc được chọn để phân công
-            // Alert đã được xử lý ở đầu hàm, nhưng nếu có lỗi logic khác thì thông báo này sẽ hữu ích
-            console.warn("Không có phân công nào được tạo. Vui lòng kiểm tra lại danh sách người và công việc đã chọn.");
-        }
-      }
-
-      function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]]; // ES6 swap
-        }
+        renderStatsReport(); // Update charts and detailed history after rolling
       }
 
       function deleteAssignment(i) {
-        if (confirm(`Bạn có chắc chắn muốn xóa phân công này (${assignments[i].user} - ${assignments[i].task})?`)) {
+        if (confirm("Bạn có chắc chắn muốn xóa phân công này khỏi danh sách hiện tại?")) {
           assignments.splice(i, 1);
           renderAssignments();
-          renderReport();
         }
       }
 
-      function clearAllAssignments() {
-        if (confirm("Bạn có chắc chắn muốn xóa TẤT CẢ các phân công hiện tại?")) {
+      function clearAssignments() {
+        if (confirm("Bạn có chắc chắn muốn xóa TẤT CẢ phân công hiện tại?")) {
           assignments = [];
           renderAssignments();
-          renderReport();
           alert("Đã xóa tất cả phân công hiện tại!");
         }
       }
 
-      document.getElementById("rollAssignButton").addEventListener("click", rollAssignments);
-      document.getElementById("clearAssignmentsButton").addEventListener("click", clearAllAssignments);
+      // Chart functions
+      function renderCharts() {
+        const userCounts = {};
+        const taskCounts = {};
 
-      // Thống kê báo cáo hiện tại
-      function renderReport() {
-        let html = "<ul>";
-        if (users.length === 0 && tasks.length === 0 && assignments.length === 0) {
-          html += "<li>Chưa có người hoặc công việc được thêm, hoặc chưa có phân công nào.</li>";
-        } else {
-          // Tạo một bản đồ để theo dõi xem công việc nào đã được gán
-          const assignedTasksMap = new Set(assignments.map(a => a.task));
-
-          // Danh sách người và công việc được phân công của họ
-          users.forEach((u) => {
-            const assignedTasks = assignments.filter((a) => a.user === u.name).map((a) => a.task);
-            html += `<li><strong>${u.name}</strong>: ${
-              assignedTasks.length > 0 ? assignedTasks.join(", ") : "<i>Chưa phân công</i>"
-            }</li>`;
-          });
-
-          // Danh sách công việc chưa được phân công cho ai
-          tasks.forEach((t) => {
-            if (!assignedTasksMap.has(t.name)) {
-              html += `<li>Công việc <strong>${t.name}</strong>: <i>Chưa được phân công cho ai</i></li>`;
-            }
-          });
-        }
-        html += "</ul>";
-        document.getElementById("report").innerHTML = html;
-      }
-
-      // --- Thống kê lịch sử trực nhật (Sử dụng Chart.js) ---
-      function renderStatsReport() {
-        // Lấy context của các canvas. Đảm bảo các canvas này tồn tại.
-        const userChartCanvasElement = document.getElementById("userAssignmentsChart");
-        const taskChartCanvasElement = document.getElementById("taskDistributionChart");
-        const historyLineChartCanvasElement = document.getElementById("assignmentHistoryLineChart");
-
-        // Kiểm tra sự tồn tại của các phần tử canvas
-        if (!userChartCanvasElement || !taskChartCanvasElement || !historyLineChartCanvasElement) {
-            console.error("Lỗi: Không tìm thấy một hoặc nhiều phần tử canvas biểu đồ.");
-            return; // Dừng hàm nếu không tìm thấy canvas
-        }
-
-        const userChartCtx = userChartCanvasElement.getContext("2d");
-        const taskChartCtx = taskChartCanvasElement.getContext("2d");
-        const historyLineChartCtx = historyLineChartCanvasElement.getContext("2d");
-        const detailedHistoryDiv = document.getElementById("detailedAssignmentHistory");
-
-        // 1. Thống kê theo người (Pie Chart)
-        const userAssignmentCounts = {};
-        // Khởi tạo số lượt 0 cho TẤT CẢ người dùng hiện có (kể cả những người chưa được phân công)
-        users.forEach((u) => (userAssignmentCounts[u.name] = 0));
-
-        // Đếm số lượt phân công cho mỗi người từ lịch sử
         assignmentHistory.forEach((h) => {
-            // Chỉ đếm nếu người dùng trong lịch sử VẪN CÒN tồn tại trong danh sách users hiện tại
-            if (users.some(u => u.name === h.user)) {
-                userAssignmentCounts[h.user]++;
-            }
+          userCounts[h.user] = (userCounts[h.user] || 0) + 1;
+          taskCounts[h.task] = (taskCounts[h.task] || 0) + 1;
         });
 
-        const userLabels = Object.keys(userAssignmentCounts);
-        const userData = Object.values(userAssignmentCounts);
+        // Prepare data for User Assignments Chart
+        const userLabels = Object.keys(userCounts);
+        const userData = Object.values(userCounts);
         const userColors = generateColors(userLabels.length);
 
-        // Hủy biểu đồ cũ nếu đã tồn tại để tránh vẽ chồng lên
-        if (userChartInstance) userChartInstance.destroy();
-        userChartInstance = new Chart(userChartCtx, {
-          type: "pie",
+        if (userChartInstance) {
+          userChartInstance.destroy();
+        }
+        const userCtx = document.getElementById("userAssignmentsChart").getContext("2d");
+        userChartInstance = new Chart(userCtx, {
+          type: "bar",
           data: {
             labels: userLabels,
             datasets: [
               {
+                label: "Số lượt trực nhật",
                 data: userData,
                 backgroundColor: userColors,
-                hoverOffset: 4,
+                borderColor: userColors.map((color) => color.replace("0.7", "1")), // Darker border
+                borderWidth: 1,
               },
             ],
           },
           options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               title: {
                 display: true,
-                text: "Tổng số lượt trực nhật của mỗi người",
+                text: "Tần suất trực nhật của mỗi người",
+                font: { size: 18, weight: "bold" },
+                color: "#34495e",
+              },
+              legend: {
+                display: false,
+              },
+              datalabels: {
+                color: "#333",
+                anchor: "end",
+                align: "top",
+                formatter: Math.round,
                 font: {
-                  size: 16,
-                },
-              },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    let label = context.label || "";
-                    if (label) {
-                      label += ": ";
-                    }
-                    if (context.parsed !== null) {
-                      label += context.parsed + " lượt";
-                    }
-                    return label;
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        // 2. Thống kê theo công việc (Pie Chart)
-        const taskCompletionCounts = {};
-        // Khởi tạo số lượt 0 cho TẤT CẢ công việc hiện có
-        tasks.forEach((t) => (taskCompletionCounts[t.name] = 0));
-
-        // Đếm số lượt hoàn thành cho mỗi công việc từ lịch sử
-        assignmentHistory.forEach((h) => {
-            // Chỉ đếm nếu công việc trong lịch sử VẪN CÒN tồn tại trong danh sách tasks hiện tại
-            if (tasks.some(t => t.name === h.task)) {
-                taskCompletionCounts[h.task]++;
-            }
-        });
-
-        const taskLabels = Object.keys(taskCompletionCounts);
-        const taskData = Object.values(taskCompletionCounts);
-        const taskColors = generateColors(taskLabels.length);
-
-        // Hủy biểu đồ cũ trước khi tạo mới
-        if (taskChartInstance) taskChartInstance.destroy();
-        taskChartInstance = new Chart(taskChartCtx, {
-          type: "pie",
-          data: {
-            labels: taskLabels,
-            datasets: [
-              {
-                data: taskData,
-                backgroundColor: taskColors,
-                hoverOffset: 4,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              title: {
-                display: true,
-                text: "Số lượt công việc được hoàn thành",
-                font: {
-                  size: 16,
-                },
-              },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    let label = context.label || "";
-                    if (label) {
-                      label += ": ";
-                    }
-                    if (context.parsed !== null) {
-                      label += context.parsed + " lượt";
-                    }
-                    return label;
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        // 3. Lịch sử phân công theo thời gian (Line Chart)
-        const assignmentsByDate = {};
-        assignmentHistory.forEach((h) => {
-          if (!assignmentsByDate[h.date]) {
-            assignmentsByDate[h.date] = 0;
-          }
-          assignmentsByDate[h.date]++;
-        });
-
-        const sortedDates = Object.keys(assignmentsByDate).sort((a, b) => new Date(a) - new Date(b));
-        const dailyAssignmentCounts = sortedDates.map((date) => assignmentsByDate[date]);
-
-        // Hủy biểu đồ cũ trước khi tạo mới
-        if (historyLineChartInstance) historyLineChartInstance.destroy();
-        historyLineChartInstance = new Chart(historyLineChartCtx, {
-          type: "line",
-          data: {
-            labels: sortedDates,
-            datasets: [
-              {
-                label: "Số lượng phân công",
-                data: dailyAssignmentCounts,
-                borderColor: "rgba(52, 152, 219, 1)",
-                backgroundColor: "rgba(52, 152, 219, 0.2)",
-                fill: true,
-                tension: 0.1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              title: {
-                display: true,
-                text: "Số lượng phân công theo ngày",
-                font: {
-                  size: 16,
+                  weight: "bold",
                 },
               },
             },
             scales: {
-              x: {
-                type: "category",
-                title: {
-                  display: true,
-                  text: "Ngày",
-                },
-              },
               y: {
                 beginAtZero: true,
                 title: {
                   display: true,
-                  text: "Số lượng",
+                  text: "Số lượt",
+                  color: "#495e74",
                 },
                 ticks: {
-                  stepSize: 1, // Ensure integer ticks
+                  precision: 0, // Ensure integer ticks
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Người",
+                  color: "#495e74",
                 },
               },
             },
           },
         });
 
-        // 4. Lịch sử phân công chi tiết (dạng danh sách)
-        let detailedHtml = "";
-        if (assignmentHistory.length === 0) {
-          detailedHtml += "<p>Chưa có lịch sử phân công chi tiết nào.</p>";
-        } else {
-          const assignmentsByDateList = {};
-          // Group by date, and within each date, store assignments as "User - Task" strings
-          assignmentHistory.forEach((h) => {
-            if (!assignmentsByDateList[h.date]) {
-              assignmentsByDateList[h.date] = [];
-            }
-            assignmentsByDateList[h.date].push(`${h.user} - ${h.task}`);
-          });
+        // Prepare data for Task Distribution Chart (User explicitly wants userData here)
+        // Note: The chart title remains "Phân bổ công việc" but the data will represent user assignments.
+        const taskLabels = userLabels; // Sử dụng userLabels như yêu cầu
+        const taskData = userData; // Sử dụng userData như yêu cầu
+        const taskColors = generateColors(taskLabels.length); // Màu sắc sẽ dựa trên số lượng người dùng
 
-          detailedHtml += "<ul>";
-          // Sort dates in descending order (newest first)
-          const sortedDatesList = Object.keys(assignmentsByDateList).sort((a, b) => new Date(b) - new Date(a));
-          sortedDatesList.forEach((date) => {
-            detailedHtml += `<li><strong>Ngày ${date}:</strong><br>`;
-            assignmentsByDateList[date].forEach((assignment) => {
-              detailedHtml += `&nbsp;&nbsp;&nbsp;&nbsp;${assignment}<br>`;
-            });
-            detailedHtml += "</li>";
-          });
-          detailedHtml += "</ul>";
+        if (taskChartInstance) {
+          taskChartInstance.destroy();
         }
-        detailedHistoryDiv.innerHTML = detailedHtml;
+        const taskCtx = document.getElementById("taskDistributionChart").getContext("2d");
+        taskChartInstance = new Chart(taskCtx, {
+          type: "doughnut",
+          data: {
+            labels: taskLabels,
+            datasets: [
+              {
+                label: "Số lượt phân công",
+                data: taskData,
+                backgroundColor: taskColors,
+                borderColor: "#ffffff", // White border between segments
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: "Phân bổ công việc", // Tiêu đề vẫn là "Phân bổ công việc"
+                font: { size: 18, weight: "bold" },
+                color: "#34495e",
+              },
+              legend: {
+                position: "right",
+                labels: {
+                  color: "#333",
+                },
+              },
+              datalabels: {
+                color: "#fff",
+                formatter: (value, context) => {
+                  const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                  const percentage = ((value / total) * 100).toFixed(1) + "%";
+                  return percentage;
+                },
+                font: {
+                  weight: "bold",
+                  size: 14,
+                },
+                textShadow: {
+                  enabled: true,
+                  color: "rgba(0,0,0,0.6)",
+                  blur: 3,
+                },
+              },
+            },
+          },
+        });
+      }
 
+      // Function to populate filter dropdowns
+      function populateFilterDropdowns() {
+        const filterUserSelect = document.getElementById("filterUser");
+        const filterTaskSelect = document.getElementById("filterTask");
+
+        // Clear previous options
+        filterUserSelect.innerHTML = '<option value="">Tất cả</option>';
+        filterTaskSelect.innerHTML = '<option value="">Tất cả</option>';
+
+        // Populate users
+        users.forEach((user) => {
+          const option = document.createElement("option");
+          option.value = user.name;
+          option.textContent = user.name;
+          filterUserSelect.appendChild(option);
+        });
+
+        // Populate tasks
+        tasks.forEach((task) => {
+          const option = document.createElement("option");
+          option.value = task.name;
+          option.textContent = task.name;
+          filterTaskSelect.appendChild(option);
+        });
+      }
+
+      // Function to render user task summary report based on filters
+      function renderUserTaskSummaryReport() {
+        const userTaskSummaryDiv = document.getElementById("userTaskSummaryReport");
+        const filterStartDate = document.getElementById("filterStartDate").value;
+        const filterEndDate = document.getElementById("filterEndDate").value;
+        const filterUser = document.getElementById("filterUser").value;
+        const filterTask = document.getElementById("filterTask").value;
+
+        // Filter history based on selected criteria
+        const filteredSummaryHistory = assignmentHistory.filter((h) => {
+          const assignmentDate = new Date(h.date);
+          const start = filterStartDate ? new Date(filterStartDate) : null;
+          const end = filterEndDate ? new Date(filterEndDate) : null;
+
+          if (start && assignmentDate < start) return false;
+          if (end && assignmentDate > end) return false;
+          if (filterUser && h.user !== filterUser) return false;
+          if (filterTask && h.task !== filterTask) return false;
+          return true;
+        });
+
+        // Group by user and then by task, storing counts
+        const userTaskCounts = {};
+        filteredSummaryHistory.forEach((h) => {
+          if (!userTaskCounts[h.user]) {
+            userTaskCounts[h.user] = {};
+          }
+          userTaskCounts[h.user][h.task] = (userTaskCounts[h.user][h.task] || 0) + 1;
+        });
+
+        let html = ""; // No heading here, as it's already in the HTML structure
+
+        if (Object.keys(userTaskCounts).length === 0) {
+          html += "<p>Không có dữ liệu thống kê nào phù hợp với bộ lọc đã chọn.</p>";
+        } else {
+          html += `
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Người</th>
+                          <th>Công việc và Số lượt</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+          `;
+
+          // Sort users alphabetically
+          const sortedUsers = Object.keys(userTaskCounts).sort();
+
+          sortedUsers.forEach((user) => {
+            const tasksForUser = userTaskCounts[user];
+            // Get task names and sort them alphabetically
+            const sortedTasks = Object.keys(tasksForUser).sort();
+
+            const linesOfTasks = [];
+            let currentLine = [];
+            for (let i = 0; i < sortedTasks.length; i++) {
+              currentLine.push(`${sortedTasks[i]} (${tasksForUser[sortedTasks[i]]})`);
+              if (currentLine.length === 8 || i === sortedTasks.length - 1) {
+                linesOfTasks.push(currentLine.join(", "));
+                currentLine = [];
+              }
+            }
+            const combinedTasksHtml = linesOfTasks.join("<br>");
+
+            // Add data-user-name and onclick event to the row
+            html += `
+                      <tr data-user-name="${user}" onclick="showUserDetailModal('${user}')">
+                          <td>${user}</td>
+                          <td>${combinedTasksHtml}</td>
+                      </tr>
+                  `;
+          });
+
+          html += `
+                  </tbody>
+              </table>
+          `;
+        }
+        userTaskSummaryDiv.innerHTML = html; // Set innerHTML for the div
+      }
+
+      // Shuffle array function (Fisher-Yates)
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      // --- New Pagination and 3-day filter logic for Detailed History ---
+      function displayDetailedHistoryWithPagination() {
+        const detailedHistoryDiv = document.getElementById("detailedAssignmentHistory");
+
+        detailedHistoryDiv.innerHTML = ""; // Xóa HOÀN TOÀN nội dung cũ
+        const heading = document.createElement("h3");
+        // heading.textContent = "Lịch sử phân công chi tiết (3 ngày gần nhất)";
+        detailedHistoryDiv.appendChild(heading);
+
+        if (!lastAssignedDate || assignmentHistory.length === 0) {
+          const noHistoryP = document.createElement("p");
+          noHistoryP.textContent = "Chưa có lịch sử phân công nào được tạo.";
+          detailedHistoryDiv.appendChild(noHistoryP);
+          document.getElementById("detailedHistoryPagination").innerHTML = "";
+          return;
+        }
+
+        // Tính toán ngày 3 ngày trước từ ngày phân công gần nhất
+        const threeDaysAgo = new Date(lastAssignedDate);
+        threeDaysAgo.setDate(lastAssignedDate.getDate() - 2);
+        threeDaysAgo.setHours(0, 0, 0, 0); // Chuẩn hóa về đầu ngày (múi giờ cục bộ)
+
+        // Lọc lịch sử trong 3 ngày gần nhất
+        const recentHistory = assignmentHistory.filter((h) => {
+          // PHẦN QUAN TRỌNG ĐÃ SỬA: Phân tích chuỗi ngày và tạo Date object trong múi giờ cục bộ
+          const [year, month, day] = h.date.split("-").map(Number);
+          const historyDate = new Date(year, month - 1, day); // month - 1 vì tháng trong JS Date là 0-indexed (0=Tháng 1, 1=Tháng 2...)
+          historyDate.setHours(0, 0, 0, 0); // Đảm bảo nó cũng là đầu ngày (múi giờ cục bộ)
+
+          return historyDate >= threeDaysAgo && historyDate <= lastAssignedDate;
+        });
+
+        // Gom nhóm lịch sử gần đây theo ngày
+        const assignmentsByDateList = {};
+        recentHistory.forEach((h) => {
+          if (!assignmentsByDateList[h.date]) {
+            assignmentsByDateList[h.date] = [];
+          }
+          assignmentsByDateList[h.date].push(`${h.user} - ${h.task}`);
+        });
+
+        // Lấy các ngày duy nhất đã được lọc và sắp xếp theo thứ tự giảm dần (mới nhất trước)
+        filteredAssignmentDates = Object.keys(assignmentsByDateList).sort((a, b) => new Date(b) - new Date(a));
+
+        if (filteredAssignmentDates.length === 0) {
+          const noRecentHistoryP = document.createElement("p");
+          noRecentHistoryP.textContent = "Không có lịch sử phân công trong 3 ngày gần nhất.";
+          detailedHistoryDiv.appendChild(noRecentHistoryP);
+          document.getElementById("detailedHistoryPagination").innerHTML = "";
+          return;
+        }
+
+        const startIndex = (currentDetailedHistoryPage - 1) * detailedHistoryPageSize;
+        const endIndex = startIndex + detailedHistoryPageSize;
+        const datesForCurrentPage = filteredAssignmentDates.slice(startIndex, endIndex);
+
+        let detailedHtml = "<ul>";
+        datesForCurrentPage.forEach((date, index) => {
+          detailedHtml += `<li style="position: relative;display:flex"><strong style="margin-right: 40px">Ngày ${date}:</strong><div class='roll-${index}'>`;
+          assignmentsByDateList[date].forEach((assignment) => {
+            detailedHtml += `${assignment}<br>`;
+          });
+          detailedHtml += `</div><i class='fa-solid fa-copy icon-${index}' style='position: absolute;right:0'></i></li>`;
+        });
+        detailedHtml += "</ul>";
+
+        detailedHistoryDiv.innerHTML += detailedHtml;
+
+        renderPaginationControls(
+          Math.ceil(filteredAssignmentDates.length / detailedHistoryPageSize),
+          currentDetailedHistoryPage,
+          document.getElementById("detailedHistoryPagination")
+        );
+      }
+
+      document.getElementById("detailedAssignmentHistory").addEventListener("click", function (event) {
+        if (event.target.classList.contains("fa-copy") && event.target.className.includes("icon-")) {
+          const iconClass = event.target.className;
+          const indexMatch = iconClass.match(/icon-(\d+)/);
+          if (indexMatch && indexMatch[1]) {
+            const index = indexMatch[1];
+            const contentDiv = document.querySelector(`.roll-${index}`);
+            if (contentDiv) {
+              const textToCopy = contentDiv.innerHTML.replace(/<br\s*\/?>/gi, "\n").trim();
+              navigator.clipboard
+                .writeText(textToCopy)
+                .then(() => {
+                  console.log("Nội dung đã sao chép:", textToCopy);
+                  alert("Đã sao chép nội dung!");
+                })
+                .catch((err) => {
+                  console.error("Không thể sao chép:", err);
+                  alert("Không thể sao chép nội dung. Vui lòng thử lại.");
+                });
+            }
+          }
+        }
+      });
+
+      function renderPaginationControls(totalPages, currentPage, paginationContainer) {
+        paginationContainer.innerHTML = ""; // Clear existing controls
+
+        if (totalPages <= 1) {
+          return; // No pagination needed for 1 or less pages
+        }
+
+        const createButton = (text, page, isActive, isDisabled) => {
+          const button = document.createElement("button");
+          button.textContent = text;
+          button.disabled = isDisabled;
+          if (isActive) {
+            button.classList.add("active");
+          }
+          button.addEventListener("click", () => {
+            currentDetailedHistoryPage = page;
+            displayDetailedHistoryWithPagination();
+          });
+          return button;
+        };
+
+        // Previous button
+        paginationContainer.appendChild(createButton("Trước", currentPage - 1, false, currentPage === 1));
+
+        // Page number buttons
+        for (let i = 1; i <= totalPages; i++) {
+          paginationContainer.appendChild(createButton(i.toString(), i, i === currentPage, false));
+        }
+
+        // Next button
+        paginationContainer.appendChild(createButton("Tiếp", currentPage + 1, false, currentPage === totalPages));
+      }
+      // --- End New Pagination and 3-day filter logic ---
+
+      // --- New: Modal Detail Functions ---
+      function showUserDetailModal(userName) {
+        const modal = document.getElementById("userModal");
+        document.getElementById("modalUserName").textContent = `Thống kê chi tiết của ${userName}`;
+        const userStatsDetailDiv = document.getElementById("userStatsDetail");
+        const userTaskDetailChartCanvas = document.getElementById("userTaskDetailChart");
+
+        // Filter history for the specific user
+        const userHistory = assignmentHistory.filter((h) => h.user === userName);
+
+        // Aggregate task counts for this user
+        const taskCountsForUser = {};
+        let totalAssignments = 0;
+        userHistory.forEach((h) => {
+          taskCountsForUser[h.task] = (taskCountsForUser[h.task] || 0) + 1;
+          totalAssignments++;
+        });
+
+        // Prepare data for the detail chart
+        const detailLabels = Object.keys(taskCountsForUser);
+        const detailData = Object.values(taskCountsForUser);
+        const detailColors = generateColors(detailLabels.length);
+
+        // Destroy old chart instance if it exists
+        if (userDetailChartInstance) {
+          userDetailChartInstance.destroy();
+        }
+
+        // Create new chart for the modal
+        userDetailChartInstance = new Chart(userTaskDetailChartCanvas, {
+          type: "doughnut",
+          data: {
+            labels: detailLabels,
+            datasets: [
+              {
+                label: "Số lượt phân công",
+                data: detailData,
+                backgroundColor: detailColors,
+                borderColor: "#ffffff",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: `Phân bổ công việc của ${userName}`,
+                font: { size: 16, weight: "bold" },
+                color: "#34495e",
+              },
+              legend: {
+                position: "right",
+                labels: {
+                  color: "#333",
+                },
+              },
+              datalabels: {
+                color: "#fff",
+                formatter: (value, context) => {
+                  const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                  const percentage = ((value / total) * 100).toFixed(1) + "%";
+                  return percentage;
+                },
+                font: {
+                  weight: "bold",
+                  size: 12,
+                },
+                textShadow: {
+                  enabled: true,
+                  color: "rgba(0,0,0,0.6)",
+                  blur: 3,
+                },
+              },
+            },
+          },
+        });
+
+        // Display detailed statistics - MODIFIED PART FOR CONCISENESS
+        let statsHtml = `
+            <h4 style="margin: 0">Công việc đã thực hiện: </h4>
+            <ul class="task-list-inline">
+        `;
+        if (detailLabels.length === 0) {
+          statsHtml += `<li>Chưa có công việc nào được phân công.</li>`;
+        } else {
+          // Join tasks with commas for a more compact display
+          const tasksFormatted = detailLabels.map((task, index) => `<strong>${task}:</strong> <strong style="color: red">${detailData[index]}</strong> lượt`).join(", ");
+          statsHtml += `<li>${tasksFormatted} </br>(Tổng: ${totalAssignments})</li>`;
+        }
+        statsHtml += `</ul>`;
+        userStatsDetailDiv.innerHTML = statsHtml;
+
+        // Show the modal
+        modal.style.display = "flex"; // Use flex to center the modal content
+      }
+
+      // Close modal when clicking outside of it
+      window.onclick = function (event) {
+        const modal = document.getElementById("userModal");
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // --- End New: Modal Detail Functions ---
+
+      function renderStatsReport() {
+        renderCharts();
+        displayDetailedHistoryWithPagination(); // Call the new pagination function here
+        renderUserTaskSummaryReport(); // Render the filtered summary report
         saveData();
       }
 
       function clearAllStats() {
         if (confirm("Bạn có chắc chắn muốn xóa TẤT CẢ lịch sử thống kê? Hành động này không thể hoàn tác.")) {
           assignmentHistory = [];
+          lastAssignedDate = null; // Reset last assigned date as well
+          currentDetailedHistoryPage = 1; // Reset pagination to first page
           renderStatsReport();
           alert("Đã xóa tất cả lịch sử thống kê!");
         }
       }
 
       document.getElementById("clearAllStatsButton").addEventListener("click", clearAllStats);
+      document.getElementById("rollAssignButton").addEventListener("click", rollAssignments);
+      document.getElementById("clearAssignmentsButton").addEventListener("click", clearAssignments);
 
       // Khởi tạo tất cả khi tải trang
-      document.addEventListener("DOMContentLoaded", function() {
+      document.addEventListener("DOMContentLoaded", function () {
         loadData();
-        renderUsers();
-        renderTasks();
+        renderUsers(); // This will call populateFilterDropdowns internally
+        renderTasks(); // This will call populateFilterDropdowns internally
         renderAssignments();
-        renderReport();
-        renderStatsReport(); // Gọi lần đầu khi tải trang
+        renderStatsReport(); // Calls renderUserTaskSummaryReport and displayDetailedHistoryWithPagination internally
+
+        // Add event listeners for select all checkboxes
+        document.getElementById("selectAllUsers").addEventListener("change", function () {
+          toggleAllUsers(this.checked);
+        });
+
+        document.getElementById("selectAllTasks").addEventListener("change", function () {
+          toggleAllTasks(this.checked);
+        });
+
+        // Add event listener for the apply filter button
+        document.getElementById("applyUserTaskSummaryFilter").addEventListener("click", renderUserTaskSummaryReport);
+
+        // Populate dropdowns initially
+        populateFilterDropdowns();
       });
     </script>
   </body>
